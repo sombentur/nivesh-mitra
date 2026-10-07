@@ -1,0 +1,535 @@
+# Which companies belong to which sector.
+#
+# The sector tiles on the dashboard show NSE's sector indices. Clicking one opens the tracked companies whose main
+# business is that sector. The grouping below is Nivesh Mitra's own classification by main business, not NSE's official
+# member list for the index (NSE reviews its index members every March and September), so the two can differ a little.
+# Only the 200 most-traded NSE stocks are tracked; a tracked company that is missing from `companies` is reported as
+# "not classified yet" on the sectors page, so gaps are visible rather than silent.
+#
+# To add a company: companies: SYMBOL: industry   (industry keys are listed under `industries`).
+
+checked: 2026-10-06
+
+# industry key: plain-language label
+industries:
+  private_bank: Private banks
+  psu_bank: Public-sector banks
+  nbfc: Lenders (NBFCs, housing & power finance)
+  insurance: Insurance
+  asset_management: Asset & wealth management
+  capital_markets: Exchanges, depositories & brokers
+  fintech: Payments & fintech
+  it_services: IT services & software
+  it_hardware: IT hardware & distribution
+  auto: Vehicle makers
+  auto_parts: Auto parts
+  pharma: Medicine makers
+  hospitals: Hospitals
+  fmcg: Packaged foods, drinks & household goods
+  retail: Retail, apparel & jewellery
+  consumer_durables: Paints, appliances & home products
+  metals: Steel, aluminium, zinc & pipes
+  mining: Coal & mining
+  oil_gas: Oil, gas & refining
+  power: Power generation & transmission
+  cement: Cement
+  chemicals: Chemicals, agrochemicals & adhesives
+  realty: Property developers
+  media: Media & entertainment
+  capital_goods: Engineering, construction & machinery
+  defence: Defence & shipbuilding
+  electricals: Electrical equipment, cables & solar gear
+  electronics: Electronics manufacturing
+  infrastructure: Ports, airports & infrastructure
+  telecom: Telecom
+  internet: Internet platforms & e-commerce
+  travel: Travel, hotels & logistics
+
+# A sector page = one or more industries. `index` is the NSE sector index shown on its dashboard tile (optional).
+sectors:
+  banks:
+    label: Banks
+    index: BANKNIFTY
+    index_name: Nifty Bank
+    about: Private and public-sector banks.
+    industries: [private_bank, psu_bank]
+  private_banks:
+    label: Private banks
+    index: NIFTYPVTBANK
+    index_name: Nifty Private Bank
+    about: Banks owned by private shareholders.
+    industries: [private_bank]
+  psu_banks:
+    label: PSU banks
+    index: NIFTYPSUBANK
+    index_name: Nifty PSU Bank
+    about: Banks where the government holds the majority.
+    industries: [psu_bank]
+  financials:
+    label: Financials
+    index: FINNIFTY
+    index_name: Nifty Financial Services
+    about: Banks, lenders, insurers, fund houses, exchanges and payment companies.
+    industries: [private_bank, psu_bank, nbfc, insurance, asset_management, capital_markets, fintech]
+  it:
+    label: IT
+    index: NIFTYIT
+    index_name: Nifty IT
+    about: Software services and IT hardware.
+    industries: [it_services, it_hardware]
+  auto:
+    label: Auto
+    index: NIFTYAUTO
+    index_name: Nifty Auto
+    about: Vehicle makers and the companies that supply their parts.
+    industries: [auto, auto_parts]
+  pharma:
+    label: Pharma
+    index: NIFTYPHARMA
+    index_name: Nifty Pharma
+    about: Medicine makers, with hospital chains listed alongside (the index itself holds only medicine makers).
+    industries: [pharma, hospitals]
+  fmcg:
+    label: FMCG
+    index: NIFTYFMCG
+    index_name: Nifty FMCG
+    about: Everyday goods — foods, drinks, cigarettes, soaps and household products.
+    industries: [fmcg]
+  metals:
+    label: Metals
+    index: NIFTYMETAL
+    index_name: Nifty Metal
+    about: Steel, aluminium, zinc, copper, pipes and mining.
+    industries: [metals, mining]
+  realty:
+    label: Realty
+    index: NIFTYREALTY
+    index_name: Nifty Realty
+    about: Companies that build and sell homes, offices and malls.
+    industries: [realty]
+  media:
+    label: Media
+    index: NIFTYMEDIA
+    index_name: Nifty Media
+    about: Television, films, music and gaming.
+    industries: [media]
+  commodities:
+    label: Commodities
+    index: NIFTYCDTY
+    index_name: Nifty Commodities
+    about: Oil and gas, power, cement, chemicals, metals and mining — businesses that live on raw-material prices.
+    industries: [oil_gas, power, cement, chemicals, metals, mining]
+  industrials:
+    label: Industrials & defence
+    about: Engineering, machinery, electrical equipment, electronics manufacturing, defence and infrastructure. No single NSE index on the dashboard covers this group.
+    industries: [capital_goods, defence, electricals, electronics, infrastructure]
+  consumer:
+    label: Consumer & retail
+    about: Shops, apparel, jewellery, paints and appliances. No single NSE index on the dashboard covers this group.
+    industries: [retail, consumer_durables]
+  telecom_internet:
+    label: Telecom, internet & travel
+    about: Telecom operators, internet platforms, airlines, hotels and logistics. No single NSE index on the dashboard covers this group.
+    industries: [telecom, internet, travel]
+
+# NSE symbol: industry. The 200 most-traded stocks as of the `checked` date come first, then other well-known names so
+# that newcomers to the top 200 are usually classified already.
+companies:
+  # --- banks
+  HDFCBANK: private_bank
+  ICICIBANK: private_bank
+  AXISBANK: private_bank
+  KOTAKBANK: private_bank
+  INDUSINDBK: private_bank
+  FEDERALBNK: private_bank
+  BANDHANBNK: private_bank
+  RBLBANK: private_bank
+  AUBANK: private_bank
+  IDFCFIRSTB: private_bank
+  YESBANK: private_bank
+  CUB: private_bank
+  KARURVYSYA: private_bank
+  KTKBANK: private_bank
+  SOUTHBANK: private_bank
+  DCBBANK: private_bank
+  UJJIVANSFB: private_bank
+  EQUITASBNK: private_bank
+  SBIN: psu_bank
+  BANKBARODA: psu_bank
+  PNB: psu_bank
+  CANBK: psu_bank
+  UNIONBANK: psu_bank
+  INDIANB: psu_bank
+  BANKINDIA: psu_bank
+  IDBI: psu_bank
+  UCOBANK: psu_bank
+  IOB: psu_bank
+  CENTRALBK: psu_bank
+  MAHABANK: psu_bank
+  PSB: psu_bank
+  # --- lenders, insurers, fund houses, exchanges, fintech
+  BAJFINANCE: nbfc
+  BAJAJFINSV: nbfc
+  SHRIRAMFIN: nbfc
+  CHOLAFIN: nbfc
+  MUTHOOTFIN: nbfc
+  MANAPPURAM: nbfc
+  LTF: nbfc
+  LICHSGFIN: nbfc
+  IIFL: nbfc
+  ABCAPITAL: nbfc
+  PFC: nbfc
+  RECLTD: nbfc
+  TFCILTD: nbfc
+  JIOFIN: nbfc
+  SBICARD: nbfc
+  BAJAJHLDNG: nbfc
+  POONAWALLA: nbfc
+  CREDITACC: nbfc
+  AAVAS: nbfc
+  HOMEFIRST: nbfc
+  CANFINHOME: nbfc
+  PNBHOUSING: nbfc
+  SUNDARMFIN: nbfc
+  M&MFIN: nbfc
+  IREDA: nbfc
+  IRFC: nbfc
+  HUDCO: nbfc
+  LICI: insurance
+  HDFCLIFE: insurance
+  SBILIFE: insurance
+  ICICIGI: insurance
+  ICICIPRULI: insurance
+  MFSL: insurance
+  GICRE: insurance
+  NIACL: insurance
+  STARHEALTH: insurance
+  NIVABUPA: insurance
+  HDFCAMC: asset_management
+  NAM-INDIA: asset_management
+  360ONE: asset_management
+  UTIAMC: asset_management
+  ABSLAMC: asset_management
+  NUVAMA: asset_management
+  ANANDRATHI: asset_management
+  BSE: capital_markets
+  MCX: capital_markets
+  CDSL: capital_markets
+  ANGELONE: capital_markets
+  GROWW: capital_markets
+  CAMS: capital_markets
+  KFINTECH: capital_markets
+  IEX: capital_markets
+  MOTILALOFS: capital_markets
+  PAYTM: fintech
+  PINELABS: fintech
+  POLICYBZR: fintech
+  # --- IT
+  TCS: it_services
+  INFY: it_services
+  HCLTECH: it_services
+  WIPRO: it_services
+  TECHM: it_services
+  LTM: it_services
+  LTIM: it_services
+  COFORGE: it_services
+  PERSISTENT: it_services
+  MPHASIS: it_services
+  OFSS: it_services
+  KPITTECH: it_services
+  TATAELXSI: it_services
+  LTTS: it_services
+  CYIENT: it_services
+  ZENSARTECH: it_services
+  SONATSOFTW: it_services
+  BSOFT: it_services
+  ECLERX: it_services
+  INTELLECT: it_services
+  NEWGEN: it_services
+  TANLA: it_services
+  MASTEK: it_services
+  HAPPSTMNDS: it_services
+  NETWEB: it_hardware
+  REDINGTON: it_hardware
+  # --- auto
+  MARUTI: auto
+  M&M: auto
+  TATAMOTORS: auto
+  TMPV: auto
+  TMCV: auto
+  BAJAJ-AUTO: auto
+  HEROMOTOCO: auto
+  TVSMOTOR: auto
+  EICHERMOT: auto
+  ASHOKLEY: auto
+  HYUNDAI: auto
+  FORCEMOT: auto
+  ATHERENERG: auto
+  OLAELEC: auto
+  ESCORTS: auto
+  MOTHERSON: auto_parts
+  BHARATFORG: auto_parts
+  SONACOMS: auto_parts
+  BOSCHLTD: auto_parts
+  UNOMINDA: auto_parts
+  EXIDEIND: auto_parts
+  MRF: auto_parts
+  BALKRISIND: auto_parts
+  APOLLOTYRE: auto_parts
+  CEATLTD: auto_parts
+  TIINDIA: auto_parts
+  SCHAEFFLER: auto_parts
+  ENDURANCE: auto_parts
+  CRAFTSMAN: auto_parts
+  AMARAJABAT: auto_parts
+  # --- pharma and hospitals
+  SUNPHARMA: pharma
+  DIVISLAB: pharma
+  DRREDDY: pharma
+  CIPLA: pharma
+  LUPIN: pharma
+  TORNTPHARM: pharma
+  ZYDUSLIFE: pharma
+  AUROPHARMA: pharma
+  GLENMARK: pharma
+  BIOCON: pharma
+  LAURUSLABS: pharma
+  MANKIND: pharma
+  GLAND: pharma
+  WOCKPHARMA: pharma
+  MOREPENLAB: pharma
+  ALKEM: pharma
+  IPCALAB: pharma
+  ABBOTINDIA: pharma
+  NATCOPHARM: pharma
+  AJANTPHARM: pharma
+  JBCHEPHARM: pharma
+  GRANULES: pharma
+  PPLPHARMA: pharma
+  ERIS: pharma
+  CONCORDBIO: pharma
+  SYNGENE: pharma
+  APOLLOHOSP: hospitals
+  MAXHEALTH: hospitals
+  FORTIS: hospitals
+  NH: hospitals
+  ASTERDM: hospitals
+  KIMS: hospitals
+  MEDANTA: hospitals
+  METROPOLIS: hospitals
+  LALPATHLAB: hospitals
+  # --- everyday goods
+  HINDUNILVR: fmcg
+  ITC: fmcg
+  NESTLEIND: fmcg
+  BRITANNIA: fmcg
+  TATACONSUM: fmcg
+  VBL: fmcg
+  GODREJCP: fmcg
+  MARICO: fmcg
+  PATANJALI: fmcg
+  RADICO: fmcg
+  UNITDSPR: fmcg
+  CUPID: fmcg
+  DABUR: fmcg
+  COLPAL: fmcg
+  EMAMILTD: fmcg
+  PGHH: fmcg
+  JUBLFOOD: fmcg
+  DEVYANI: fmcg
+  BIKAJI: fmcg
+  HONASA: fmcg
+  UBL: fmcg
+  # --- shops, apparel, jewellery, paints and appliances
+  TITAN: retail
+  KALYANKJIL: retail
+  TRENT: retail
+  DMART: retail
+  VMM: retail
+  LENSKART: retail
+  PAGEIND: retail
+  ABFRL: retail
+  SHOPERSTOP: retail
+  SENCO: retail
+  ASIANPAINT: consumer_durables
+  BERGEPAINT: consumer_durables
+  VOLTAS: consumer_durables
+  BLUESTARCO: consumer_durables
+  WHIRLPOOL: consumer_durables
+  CROMPTON: consumer_durables
+  KAJARIACER: consumer_durables
+  ASTRAL: consumer_durables
+  SUPREMEIND: consumer_durables
+  # --- metals and mining
+  TATASTEEL: metals
+  JSWSTEEL: metals
+  HINDALCO: metals
+  VEDL: metals
+  VAML: metals
+  JINDALSTEL: metals
+  SAIL: metals
+  NATIONALUM: metals
+  HINDZINC: metals
+  HINDCOPPER: metals
+  APLAPOLLO: metals
+  WELCORP: metals
+  RATNAVEER: metals
+  JSL: metals
+  RATNAMANI: metals
+  LLOYDSME: metals
+  COALINDIA: mining
+  NMDC: mining
+  GMDCLTD: mining
+  # --- oil, gas, power, cement, chemicals
+  RELIANCE: oil_gas
+  ONGC: oil_gas
+  OIL: oil_gas
+  IOC: oil_gas
+  BPCL: oil_gas
+  HINDPETRO: oil_gas
+  GAIL: oil_gas
+  MRPL: oil_gas
+  CHENNPETRO: oil_gas
+  AEGISLOG: oil_gas
+  PETRONET: oil_gas
+  IGL: oil_gas
+  MGL: oil_gas
+  GUJGASLTD: oil_gas
+  CASTROLIND: oil_gas
+  NTPC: power
+  POWERGRID: power
+  ADANIPOWER: power
+  TATAPOWER: power
+  JSWENERGY: power
+  ADANIGREEN: power
+  ADANIENSOL: power
+  NHPC: power
+  SJVN: power
+  TORNTPOWER: power
+  CESC: power
+  NLCINDIA: power
+  NTPCGREEN: power
+  ULTRACEMCO: cement
+  GRASIM: cement
+  AMBUJACEM: cement
+  ACC: cement
+  SHREECEM: cement
+  DALBHARAT: cement
+  JKCEMENT: cement
+  RAMCOCEM: cement
+  PIDILITIND: chemicals
+  UPL: chemicals
+  SOLARINDS: chemicals
+  HSCL: chemicals
+  SRF: chemicals
+  PIIND: chemicals
+  DEEPAKNTR: chemicals
+  TATACHEM: chemicals
+  AARTIIND: chemicals
+  NAVINFLUOR: chemicals
+  ATUL: chemicals
+  COROMANDEL: chemicals
+  CHAMBLFERT: chemicals
+  LINDEINDIA: chemicals
+  # --- property
+  DLF: realty
+  LODHA: realty
+  GODREJPROP: realty
+  PRESTIGE: realty
+  OBEROIRLTY: realty
+  PHOENIXLTD: realty
+  BRIGADE: realty
+  SOBHA: realty
+  ANANTRAJ: realty
+  SIGNATURE: realty
+  # --- media
+  ZEEL: media
+  SUNTV: media
+  PVRINOX: media
+  NAZARA: media
+  SAREGAMA: media
+  NETWORK18: media
+  TIPSMUSIC: media
+  # --- engineering, defence, electricals, electronics, infrastructure
+  LT: capital_goods
+  BHEL: capital_goods
+  SIEMENS: capital_goods
+  CUMMINSIND: capital_goods
+  WABAG: capital_goods
+  THERMAX: capital_goods
+  KPIL: capital_goods
+  AIAENG: capital_goods
+  TIMKEN: capital_goods
+  GRINDWELL: capital_goods
+  ELGIEQUIP: capital_goods
+  KIRLOSENG: capital_goods
+  BEL: defence
+  HAL: defence
+  MAZDOCK: defence
+  COCHINSHIP: defence
+  BDL: defence
+  DATAPATTNS: defence
+  PARAS: defence
+  APOLLO: defence
+  AZAD: defence
+  GRSE: defence
+  ZENTEC: defence
+  MTARTECH: defence
+  ABB: electricals
+  CGPOWER: electricals
+  POWERINDIA: electricals
+  GVT&D: electricals
+  ENRIN: electricals
+  POLYCAB: electricals
+  KEI: electricals
+  HAVELLS: electricals
+  APARINDS: electricals
+  TDPOWERSYS: electricals
+  WAAREEENER: electricals
+  PREMIERENE: electricals
+  SUZLON: electricals
+  INOXWIND: electricals
+  BHARTIHEXA: electricals
+  SCHNEIDER: electricals
+  TRIVENI: electricals
+  DIXON: electronics
+  KAYNES: electronics
+  AMBER: electronics
+  SYRMA: electronics
+  PGEL: electronics
+  CYIENTDLM: electronics
+  ADANIENT: infrastructure
+  ADANIPORTS: infrastructure
+  GMRAIRPORT: infrastructure
+  IRB: infrastructure
+  JSWINFRA: infrastructure
+  CONCOR: infrastructure
+  RVNL: infrastructure
+  IRCON: infrastructure
+  NBCC: infrastructure
+  # --- telecom, internet, travel
+  BHARTIARTL: telecom
+  INDUSTOWER: telecom
+  IDEA: telecom
+  TATACOMM: telecom
+  HFCL: telecom
+  RAILTEL: telecom
+  ETERNAL: internet
+  SWIGGY: internet
+  MEESHO: internet
+  NAUKRI: internet
+  NYKAA: internet
+  INDIAMART: internet
+  JUSTDIAL: internet
+  CARTRADE: internet
+  BRAINBEES: internet
+  IXIGO: internet
+  INDIGO: travel
+  INDHOTEL: travel
+  DELHIVERY: travel
+  IRCTC: travel
+  LEMONTREE: travel
+  CHALET: travel
+  EIHOTEL: travel
+  BLUEDART: travel
+  MAHLOG: travel

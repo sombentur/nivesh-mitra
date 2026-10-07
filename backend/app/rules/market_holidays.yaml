@@ -1,0 +1,38 @@
+# NSE and BSE trading holidays (both exchanges keep the same list for shares).
+# The calendar shows PAST days from the prices that actually traded; this list is used for today and the days ahead.
+# The exchanges publish next year's list in December — add it below under its year, then restart NiveshMitra.
+version: 1
+checked: "2026-10-03"
+sources:
+  - "NSE/BSE trading holidays for 2026, as listed at zerodha.com/marketintel/holiday-calendar"
+  - "January–September 2026 confirmed against the days the Nifty 50 actually traded"
+
+holidays:
+  "2026-01-15": "Municipal Corporation Elections in Maharashtra"
+  "2026-01-26": "Republic Day"
+  "2026-03-03": "Holi"
+  "2026-03-26": "Shri Ram Navami"
+  "2026-03-31": "Shri Mahavir Jayanti"
+  "2026-04-03": "Good Friday"
+  "2026-04-14": "Dr. Baba Saheb Ambedkar Jayanti"
+  "2026-05-01": "Maharashtra Day"
+  "2026-05-28": "Bakri Id"
+  "2026-06-26": "Muharram"
+  "2026-09-14": "Ganesh Chaturthi"
+  "2026-10-02": "Mahatma Gandhi Jayanti"
+  "2026-10-20": "Dussehra"
+  "2026-11-10": "Diwali Balipratipada"
+  "2026-11-24": "Guru Nanak Jayanti"
+  "2026-12-25": "Christmas"
+
+# Festivals that fall on a Saturday or Sunday (the market is closed anyway) — shown by name in the calendar.
+weekend_holidays:
+  "2026-02-15": "Maha Shivaratri"
+  "2026-03-21": "Id-Ul-Fitr (Ramzan Id)"
+  "2026-08-15": "Independence Day"
+  "2026-11-08": "Diwali Laxmi Pujan"
+
+# Trading on a day that is normally closed. full_day: true = the usual 9:15 AM – 3:30 PM session.
+special_sessions:
+  "2026-02-01": {name: "Union Budget day (special Sunday session)", full_day: true}
+  "2026-11-08": {name: "Diwali Muhurat trading", full_day: false, note: "A short evening session of about an hour; the exchanges announce the time a few weeks before."}

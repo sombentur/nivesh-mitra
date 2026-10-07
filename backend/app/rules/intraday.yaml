@@ -1,0 +1,58 @@
+# Intraday (buy in the morning, sell the same day) — practice only. Long only, no borrowed money (no MIS leverage).
+# These three setups and their numbers were fixed on 30-Sep-2026 BEFORE any result was seen. They are judged on
+# 2024-01 → today, data they were never tuned on. Changing a number means re-testing; bump `version` when you do.
+version: 1
+
+capital_from_setting: trading_paper_capital   # the same practice money as swing trading (₹10,000 by default)
+risk_per_trade: 0.01          # lose at most 1% of capital if the stop is hit
+max_position_share: 1.0       # one trade may use the whole practice capital (never more: no leverage)
+max_trades_per_day: 2
+exit_time: "15:00"            # sell at 3:00 PM if neither stop nor target was hit (before Groww's own square-off)
+market_filter_sma: 50         # only trade when the Nifty 50 closed above its 50-day average the day before
+min_price: 100
+min_risk_pct: 0.003           # stop at least 0.3% away (tighter stops just get hit by noise)
+max_risk_pct: 0.03            # …and at most 3% away
+
+periods:
+  build: ["2020-01-01", "2023-12-31"]     # where the rules come from
+  test: ["2024-01-01", "2099-12-31"]      # the verdict comes from here only
+
+verdict:
+  min_test_trades: 100
+  min_test_avg_r: 0.05        # must make at least +0.05R per trade after all charges in the test period
+  build_must_not_lose: true   # and must not have lost money in the build period either
+
+setups:
+  orb:
+    label: "Opening-range breakout"
+    plain: "The first 30 minutes (9:15–9:45) set a range. Buy if the price breaks above its high before noon; the stop is the range's low."
+    enabled: true
+    range_bars: 2              # two 15-minute bars
+    trigger_buffer: 0.0005     # buy 0.05% above the range high
+    last_entry: "12:00"
+    min_range_pct: 0.004
+    max_range_pct: 0.025
+    trend_sma: 20              # yesterday's close above its 20-day average
+    target_r: 2.0
+  gap_and_go:
+    label: "Gap-up and go"
+    plain: "The stock opens 1–4% higher than yesterday's close with heavy early trading and a strong first 15 minutes. Buy above that first bar's high."
+    enabled: true
+    min_gap: 0.01
+    max_gap: 0.04
+    first_bar_close_in_top: 0.7   # first bar closes in the top 30% of its range
+    first_bar_volume_multiple: 2.0  # vs the average first-bar volume of the last 20 sessions
+    trigger_buffer: 0.0005
+    last_entry: "11:00"
+    target_r: 2.0
+  prev_high_breakout:
+    label: "Yesterday's-high breakout"
+    plain: "In an uptrend, yesterday closed near its high. Buy if the price crosses yesterday's high after 9:30; the stop is 1.2% below the entry or today's low, whichever is closer."
+    enabled: true
+    prev_close_in_top: 0.75
+    trend_sma: 20
+    trigger_buffer: 0.001
+    first_entry: "09:30"
+    last_entry: "13:00"
+    stop_pct: 0.012
+    target_r: 2.0

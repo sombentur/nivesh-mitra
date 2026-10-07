@@ -1,0 +1,41 @@
+[project]
+name = "niveshmitra-backend"
+version = "0.1.0"
+description = "NiveshMitra — personal, decision-only investment assistant (backend)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy>=2.0.30",
+    "alembic>=1.13",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    "cryptography>=43",
+    "keyring>=25",
+    "pyotp>=2.9",
+    "segno>=1.6",
+    "google-auth>=2.30",
+    "requests>=2.32",
+    "httpx>=0.27",
+    "python-multipart>=0.0.9",
+    # growwapi 1.5.0 pins pandas<3 — keep the whole project on pandas 2.x
+    "pandas>=2.2,<3",
+    "numpy>=1.26",
+    "pyyaml>=6",
+    "python-dateutil>=2.9",
+    "apscheduler>=3.10,<4",
+    # Official Groww SDK — used READ-ONLY through app/connectors/groww.py (order methods are disabled)
+    "growwapi==1.5.0",
+    # Official Model Context Protocol client — used to read Trendlyne data (connectors/trendlyne.py)
+    "mcp>=1.9",
+    "anthropic>=1.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

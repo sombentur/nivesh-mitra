@@ -1,0 +1,111 @@
+# Mutual fund scoring (doc 03, Part C). Funds are only ever compared with funds in the same category.
+# Change a weight? Bump `version` — every score records the version that produced it.
+version: 1
+
+risk_free_rate: 0.065        # used by Sharpe and Sortino
+lookback_years: 10           # rolling windows ending in the last 10 years
+min_history_years: 3         # younger funds are shown but not ranked
+min_category_size: 5         # fewer eligible funds than this → category not ranked
+
+confidence:
+  high_coverage: 0.90        # share of the model's weight that had data
+  medium_coverage: 0.75
+  unscored_below: 0.60
+  high_min_history_years: 5
+  high_min_peers: 15
+
+# Points per metric (each model sums to 100). Metrics without data are dropped and the rest rescaled.
+models:
+  equity:          # equity, hybrid, solution-oriented, fund-of-funds
+    rr3_med: 8
+    rr5_med: 10
+    rr7_med: 7
+    beat_bench_3y: 10
+    beat_cat_3y: 10
+    maxdd_5y: 7
+    downcap_3y: 7
+    rr3_p10: 6
+    sortino_3y: 8
+    sharpe_3y: 7
+    ter: 10
+    manager_tenure: 5      # needs factsheet data (not available yet)
+    aum_adequacy: 5
+  index:           # scored only against funds tracking the same index
+    tracking_error_1y: 20
+    tracking_error_3y: 15
+    ter: 35
+    tracking_diff_1y: 10
+    tracking_diff_3y: 10
+    aum_adequacy: 10
+  debt:
+    rr1_med: 10
+    rr3_med: 15
+    beat_cat_1y: 15
+    vol_3y: 10
+    maxdd_5y: 10
+    ter: 20
+    credit_quality: 20     # needs portfolio disclosures (not available yet)
+  liquid:
+    ter: 40
+    return_1y: 30
+    worst_1m: 30
+
+lower_is_better: [vol_3y, downcap_3y, ter, tracking_error_1y, tracking_error_3y]
+
+asset_class_models: {Equity: equity, Hybrid: equity, Solution: equity, Life Cycle: equity, FoF: equity, Debt: debt, Index: index}
+category_models:
+  Liquid Fund: liquid
+  Overnight Fund: liquid
+  Money Market Fund: liquid
+  Arbitrage Fund: debt
+
+# Index funds are grouped by the index they track (matched on the fund name, lower-cased, punctuation → spaces).
+# Only these groups are ranked; other index funds are shown unranked.
+index_groups:
+  - {key: nifty_50,        label: "Nifty 50",            pattern: "\\bnifty 50\\b(?! (equal|value|arbitrage|shariah|dividend|quality|low|alpha|momentum))"}
+  - {key: nifty_next_50,   label: "Nifty Next 50",       pattern: "\\bnifty next 50\\b"}
+  - {key: sensex,          label: "BSE Sensex",          pattern: "\\bsensex\\b(?! next)"}
+  - {key: nifty_100,       label: "Nifty 100",           pattern: "\\bnifty 100\\b(?! (equal|low|quality|alpha|esg))"}
+  - {key: nifty_500,       label: "Nifty 500",           pattern: "\\bnifty 500\\b(?! (multicap|multi cap|value|momentum|quality|equal|low|shariah|flexicap))"}
+  - {key: nifty_midcap_150, label: "Nifty Midcap 150",   pattern: "\\bnifty midcap 150\\b(?! (quality|momentum|value))"}
+  - {key: nifty_smallcap_250, label: "Nifty Smallcap 250", pattern: "\\bnifty smallcap 250\\b(?! (quality|momentum|value))"}
+  - {key: nifty_largemidcap_250, label: "Nifty LargeMidcap 250", pattern: "\\bnifty large ?midcap 250\\b"}
+
+# Benchmark stand-in: until official index (TRI) data is added, each active category is compared with the
+# longest-running index fund on its usual benchmark. That fund's NAV is after its own small costs, so it's a fair,
+# slightly generous yardstick — and exactly the cheap alternative you could buy instead.
+benchmark_proxy:
+  Large Cap Fund: nifty_50
+  Flexi Cap Fund: nifty_500
+  Multi Cap Fund: nifty_500
+  Focused Fund: nifty_500
+  Value Fund: nifty_500
+  Contra Fund: nifty_500
+  Dividend Yield Fund: nifty_500
+  ELSS: nifty_500
+  Large & Mid Cap Fund: nifty_largemidcap_250
+  Mid Cap Fund: nifty_midcap_150
+  Small Cap Fund: nifty_smallcap_250
+
+# Plain-language reasons. {v} = the fund's value, {p} = percentile among peers, {cat} = category, {bench} = stand-in.
+reasons:
+  rr3_med:        {for: "Typical 3-year return of {v:.1%} a year — better than {p:.0f}% of {cat} funds", against: "Typical 3-year return of {v:.1%} a year trails most {cat} funds"}
+  rr5_med:        {for: "Typical 5-year return of {v:.1%} a year — better than {p:.0f}% of {cat} funds", against: "Typical 5-year return of {v:.1%} a year trails most {cat} funds"}
+  rr7_med:        {for: "Strong over 7-year stretches ({v:.1%} a year typically)", against: "Weaker over 7-year stretches ({v:.1%} a year typically)"}
+  rr1_med:        {for: "Typical 1-year return {v:.1%}, above most peers", against: "Typical 1-year return {v:.1%}, below most peers"}
+  beat_bench_3y:  {for: "Beat the {bench} index fund in {v:.0%} of 3-year periods", against: "Beat the {bench} index fund in only {v:.0%} of 3-year periods — the cheap index fund often did better"}
+  beat_cat_3y:    {for: "Beat the typical {cat} fund in {v:.0%} of 3-year periods", against: "Beat the typical {cat} fund in only {v:.0%} of 3-year periods"}
+  beat_cat_1y:    {for: "Beat the typical {cat} fund in {v:.0%} of 1-year periods", against: "Beat the typical {cat} fund in only {v:.0%} of 1-year periods"}
+  maxdd_5y:       {for: "Its worst fall in 5 years ({v:.0%}) was milder than {p:.0f}% of peers", against: "Fell {v:.0%} at its worst in 5 years — deeper than most peers"}
+  downcap_3y:     {for: "In falling months it lost only {v:.0%} as much as the index", against: "In falling months it lost {v:.0%} as much as the index"}
+  rr3_p10:        {for: "Even in bad 3-year stretches it returned {v:.1%} a year", against: "In bad 3-year stretches it returned just {v:.1%} a year"}
+  sortino_3y:     {for: "Good reward for the downs it put you through (better than {p:.0f}% of peers)", against: "Lower reward for the downs it put you through than most peers"}
+  sharpe_3y:      {for: "Good return for its ups and downs (better than {p:.0f}% of peers)", against: "Lower return for its ups and downs than most peers"}
+  vol_3y:         {for: "Steadier than {p:.0f}% of peers", against: "Bumpier than most peers"}
+  ter:            {for: "Low yearly cost: {v:.2%}", against: "Higher yearly cost than most peers: {v:.2%}"}
+  tracking_error_1y: {for: "Follows its index very closely", against: "Strays from its index more than other funds tracking it"}
+  tracking_error_3y: {for: "Has followed its index closely for 3 years", against: "Has strayed from its index more than peers over 3 years"}
+  tracking_diff_1y:  {for: "Kept up with other {bench} funds over the last year", against: "Lagged other {bench} funds by {v:.2%} over the last year"}
+  tracking_diff_3y:  {for: "Kept up with other {bench} funds over 3 years", against: "Lagged other {bench} funds by {v:.2%} a year over 3 years"}
+  return_1y:      {for: "1-year return {v:.2%}, better than {p:.0f}% of peers", against: "1-year return {v:.2%}, below most peers"}
+  worst_1m:       {for: "No bad months: worst 30 days in 3 years was {v:.2%}", against: "Had a rough patch: worst 30 days in 3 years was {v:.2%}"}

@@ -1,0 +1,74 @@
+# Short-term (swing) trading rules — doc 03 Part D and doc 04. Delivery trades only: buy on one day, sell on a later day.
+# Change a number? Bump `version` — every idea and backtest records the version that produced it.
+version: 1
+
+universe:
+  size: 200                       # the most-traded NSE stocks…
+  min_price: 100                  # …priced at ₹100 or more
+  min_median_traded_value: 200000000   # and at least ₹20 crore traded on a typical day
+  liquidity_days: 60
+  exclude_name_pattern: "(?i)\\b(etf|bees|liquid|gilt|gold|silver)\\b"
+  history_start: "2020-01-01"     # Groww's price history begins in 2020
+
+paper:
+  start_capital: 10000            # pretend money for daily practice (change in Settings)
+  max_open_positions: 3
+
+risk:                             # doc 04
+  risk_per_trade: 0.01            # R-05: lose at most 1% of trading capital if the stop-loss is hit
+  max_position_share: 0.35        # no single trade uses more than 35% of trading capital
+  daily_loss_limit: 0.03          # R-06: after losing 3% in a day, no new ideas until tomorrow
+  min_reward_risk: 2.0            # R-12
+  cooling_off: {losses_in_a_row: 3, days: 2}          # R-10
+  cooling_off_long: {losses: 5, out_of_last: 8, days: 5}
+
+backtest:
+  min_trades: 100                 # a setup needs at least this many past trades to be trusted
+  min_expectancy_r: 0.05          # …and must have made money after all costs (average ≥ +0.05R per trade)
+  max_positions: 3
+
+setups:
+  trend_pullback:
+    label: "Pullback in an uptrend"
+    plain: "A stock in a steady uptrend dipped to its 20-day average and bounced back up today."
+    enabled: true
+    rules:
+      above_200dma: true
+      dma50_above_200: true
+      touched_20dma_within_days: 3
+      touch_tolerance: 0.01         # low came within 1% of the 20-day average
+      close_above_20dma: true
+      rsi_min: 40
+      rsi_max: 60
+      green_day: true
+      stop_atr: 2.0                 # stop = higher of (entry − 2×ATR) and (5-day low − 0.2×ATR)
+      stop_swing_days: 5
+      stop_swing_buffer_atr: 0.2
+      target_r: 2.0
+      max_hold_days: 10
+      entry_band: 0.005             # buy tomorrow within ±0.5% of today's close
+      min_risk_pct: 0.015
+      max_risk_pct: 0.08
+  volume_breakout:
+    label: "Breakout on high volume"
+    plain: "A stock in an uptrend closed above its highest price of the last 20 days, with much more trading than usual."
+    enabled: true
+    rules:
+      breakout_days: 20
+      volume_multiple: 1.5
+      dma50_above_200: true
+      above_50dma: true
+      close_in_top_of_range: 0.7    # closed in the top 30% of the day's range
+      rsi_max: 75
+      stop_below_breakout_atr: 0.5  # stop = breakout level − 0.5×ATR (or entry − 1.5×ATR if that is too tight)
+      fallback_stop_atr: 1.5
+      target_r: 2.5
+      max_hold_days: 15
+      entry_band_up: 0.01           # buy tomorrow up to 1% above today's close
+      min_risk_pct: 0.015
+      max_risk_pct: 0.08
+
+# Dashboard market mood — a simple, transparent reading of the Nifty 50 trend and India VIX (not a forecast).
+market_mood:
+  vix_calm: 15
+  vix_nervous: 20

@@ -1,0 +1,61 @@
+# How AMFI's category headers map to the categories NiveshMitra compares funds within.
+# AMFI headers look like "Open Ended Schemes(Equity Schemes - Flexi Cap Fund)" and, during SEBI's 2026
+# re-categorisation, the same category can appear under old and new wording. Add a line here if AMFI renames again.
+version: 1
+
+# Exact "<group> - <name>" pairs (after apostrophes are straightened).
+pairs:
+  "Index Funds - Equity Funds":            {asset_class: Index, category: "Index Fund – Equity"}
+  "Index Funds - Debt Funds":              {asset_class: Index, category: "Index Fund – Debt"}
+  "Index Funds - Hybrid Fund":             {asset_class: Index, category: "Index Fund – Hybrid"}
+  "Other Scheme - Index Funds":            {asset_class: Index, category: "Index Fund – Equity"}
+  "Other Scheme - FoF Domestic":           {asset_class: FoF, category: "Fund of Funds – Domestic"}
+  "Other Scheme - FoF Overseas":           {asset_class: FoF, category: "Fund of Funds – Overseas"}
+  "Other Scheme - Gold ETF":               {asset_class: ETF, category: "Gold ETF"}
+  "Other Scheme - Other ETFs":             {asset_class: ETF, category: "Other ETF"}
+  "Fund of Funds Scheme (Domestic) - Fund of Funds Scheme (Domestic)": {asset_class: FoF, category: "Fund of Funds – Domestic"}
+  "Overseas Fund of Funds - Fund of Funds investing overseas":        {asset_class: FoF, category: "Fund of Funds – Overseas"}
+  "Income/Debt Oriented Schemes - Sectoral Fund":                     {asset_class: Debt, category: "Sectoral Debt Fund"}
+  "Children's Fund - Childrens' Fund":     {asset_class: Solution, category: "Children's Fund"}
+
+# Group (left of " - ") → asset class, when no exact pair matches.
+groups:
+  "Equity Scheme": Equity
+  "Equity Schemes": Equity
+  "Debt Scheme": Debt
+  "Income/Debt Oriented Schemes": Debt
+  "Hybrid Scheme": Hybrid
+  "Hybrid Schemes": Hybrid
+  "Exchange Traded Funds (ETFs)": ETF
+  "Solution Oriented Scheme": Solution
+  "Solution Oriented Schemes **": Solution
+  "Life Cycle Funds": Life Cycle
+  "Other Scheme": Other
+
+# Category name (right of " - ") → canonical name, where AMFI uses different words for the same category.
+names:
+  "ELSS- Tax Saver Fund": ELSS
+  "Sectoral/ Thematic": "Sectoral/Thematic"
+  "Balanced Advantage Fund/ Dynamic Asset Allocation": "Balanced Advantage"
+  "Dynamic Asset Allocation or Balanced Advantage": "Balanced Advantage"
+  "Equity Savings Fund": "Equity Savings"
+  "Multi Asset Allocation Fund": "Multi Asset Allocation"
+  "Banking and PSU Debt Fund": "Banking and PSU Fund"
+  "Short Term Fund": "Short Duration Fund"
+  "Ultra Short Term Fund": "Ultra Short Duration Fund"
+  "Medium Term Fund": "Medium Duration Fund"
+  "Medium to Long Term Fund": "Medium to Long Duration Fund"
+  "Long Term Fund": "Long Duration Fund"
+  "Dynamic Term Fund": "Dynamic Bond"
+  "Floating Interest Rates Fund": "Floater Fund"
+  "10-year Constant Maturity Gilt Fund": "Gilt Fund (10-year constant duration)"
+
+# Index funds listed under the old "Other Scheme - Index Funds" heading whose name matches this are debt index funds.
+debt_index_name_pattern: "(?i)\\b(sdl|g-?sec|gilt|bond|psu|debt|crisil|t-?bill|target maturity|aaa)\\b"
+
+# Scheme types other than open-ended are kept for your holdings but never recommended.
+open_ended_type: "Open Ended Schemes"
+
+# Which funds get full daily history downloaded (they're the ones NiveshMitra can compare and recommend).
+tracked_asset_classes: [Equity, Debt, Hybrid, Index, Solution, Life Cycle, FoF]
+active_within_days: 10

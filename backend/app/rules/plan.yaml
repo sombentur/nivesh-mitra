@@ -1,0 +1,72 @@
+# Suggested mutual fund portfolio and SIP plan (doc 03 §C6–C7). Every number here is a judgement call you can change.
+version: 1
+
+# Fund "slots" and which funds can fill them (always the best-scored Direct–Growth fund in that group).
+slots:
+  nifty_50_index:     {label: "Nifty 50 index fund",        index_group: "Nifty 50",     equity_share: 1.0, scenario: large_cap}
+  flexi_cap:          {label: "Flexi-cap fund",             category: "Flexi Cap Fund",    equity_share: 1.0, scenario: flexi_cap, active_equity: true}
+  mid_cap:            {label: "Mid-cap fund",               category: "Mid Cap Fund",      equity_share: 1.0, scenario: mid_cap, active_equity: true}
+  small_cap:          {label: "Small-cap fund",             category: "Small Cap Fund",    equity_share: 1.0, scenario: small_cap, active_equity: true}
+  balanced_advantage: {label: "Balanced advantage fund",    category: "Balanced Advantage", equity_share: 0.5, scenario: balanced_advantage}
+  short_duration:     {label: "Short-duration debt fund",   category: "Short Duration Fund", equity_share: 0.0, scenario: short_debt}
+  liquid:             {label: "Liquid fund",                category: "Liquid Fund",       equity_share: 0.0, scenario: liquid}
+
+# For goals 5+ years away (percent of each SIP).
+templates:
+  conservative: {nifty_50_index: 35, flexi_cap: 15, balanced_advantage: 20, short_duration: 30}
+  moderate:     {nifty_50_index: 35, flexi_cap: 25, mid_cap: 15, short_duration: 25}
+  aggressive:   {nifty_50_index: 30, flexi_cap: 25, mid_cap: 20, small_cap: 10, short_duration: 15}
+
+# Closer goals hold less in shares. The share taken out of equity goes to the debt slot.
+horizon_caps:
+  - {min_years: 5, equity_cap: 100}
+  - {min_years: 3, equity_cap: 50}
+  - {min_years: 1, equity_cap: 20}
+  - {min_years: 0, liquid_only: true}
+debt_slot: short_duration
+
+# Scenario returns per year (nominal, before tax) — assumptions, not predictions. "Recommended SIP" uses conservative.
+scenario_returns:
+  large_cap:          [0.07, 0.10, 0.12]
+  flexi_cap:          [0.07, 0.11, 0.13]
+  mid_cap:            [0.06, 0.12, 0.15]
+  small_cap:          [0.05, 0.12, 0.16]
+  balanced_advantage: [0.06, 0.09, 0.11]
+  short_debt:         [0.055, 0.065, 0.075]
+  liquid:             [0.05, 0.06, 0.065]
+
+min_sip_per_fund: 500        # smaller slices are merged into the goal's main fund of the same kind
+round_to: 100
+min_confidence: medium       # prefer funds scored with at least this confidence
+max_similarity: 0.95         # two active equity funds moving this closely together are too similar
+
+# Dashboard: "which fund for how long?" The best-scored Direct fund in each listed category is shown, first category first.
+# Categories follow the goal rules above: nothing in shares under 1 year; at most ~half in shares for 3 years.
+horizon_picks:
+  - key: m3
+    label: "3 months"
+    why: "Money you need within months must not fall in value. Liquid funds lend for days to weeks and rarely have a bad week."
+    categories: ["Liquid Fund", "Overnight Fund"]
+  - key: m6
+    label: "6 months"
+    why: "A little longer, so money-market funds (loans of up to a year) can earn slightly more, still with very low risk."
+    categories: ["Money Market Fund", "Ultra Short Duration Fund", "Liquid Fund"]
+  - key: y1
+    label: "1 year"
+    why: "Still too soon for shares. Money-market and arbitrage funds aim for steady returns; arbitrage funds are taxed like equity funds."
+    categories: ["Money Market Fund", "Arbitrage Fund", "Ultra Short to Short Term Fund"]
+  - key: y2
+    label: "2 years"
+    why: "Short-duration and high-quality bond funds can earn more than money-market funds over two years, with small ups and downs."
+    categories: ["Short Duration Fund", "Banking and PSU Fund", "Corporate Bond Fund"]
+  - key: y3
+    label: "3 years"
+    why: "Three years allows a limited share in stocks. These mixes keep roughly half or less in shares."
+    categories_by_profile:
+      conservative: ["Short Duration Fund", "Conservative Hybrid Fund", "Balanced Advantage"]
+      moderate: ["Balanced Advantage", "Short Duration Fund", "Equity Savings"]
+      aggressive: ["Balanced Advantage", "Multi Asset Allocation", "Short Duration Fund"]
+  - key: y5
+    label: "5 years or more"
+    why: "Long enough for shares to recover from falls. See My plan for the full mix for each of your goals."
+    categories: ["Index Fund – Equity", "Flexi Cap Fund"]

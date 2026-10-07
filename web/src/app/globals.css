@@ -1,0 +1,541 @@
+@import "tailwindcss";
+
+/*
+ * Nivesh Mitra design system.
+ * The two brand colours are sampled from the logo: navy #001E4A and emerald #01854D. Every other colour is a tint or a
+ * shade of those two, plus red for losses, amber for cautions and blue for neutral chart lines.
+ * Every text colour below is checked against the backgrounds it sits on (WCAG AA, 4.5:1 or better).
+ */
+:root {
+  color-scheme: light;
+  --navy: #001e4a;
+  --emerald: #01854d;
+
+  --bg: #f3f6fb;
+  --surface: #ffffff;
+  --surface-2: #f1f5fa;
+  --surface-3: #e6edf6;
+  --border: #dde5f0;
+  --border-strong: #c2cfe1;
+  --text: #0a2046;
+  --muted: #526684;
+  --subtle: #8394b0;
+
+  --brand: #01854d;
+  --brand-strong: #016a3d;
+  --brand-soft: #e5f6ec;
+  --on-brand: #ffffff;
+  --navy-fill: #001e4a;
+  --ring: #01854d;
+
+  --gold: #8f5d06;
+  --gold-soft: #fbf3df;
+  --good: #046c3f;
+  --good-soft: #e5f6ec;
+  --warn: #8f5503;
+  --warn-soft: #fdf3df;
+  --bad: #b3122c;
+  --bad-soft: #fdecee;
+  --on-bad: #ffffff;
+  --info: #1d4f9f;
+  --info-soft: #e8f0fb;
+  /* Price moves keep their usual meaning: green up, red down (always shown with ▲ ▼ or + − too, never colour alone) */
+  --up: #04753f;
+  --up-soft: #e3f6eb;
+  --down: #c2152f;
+  --down-soft: #fdebed;
+
+  /* Navy panels (ticker tape, greeting banner): dark in both themes, so they carry their own text colours */
+  --ink: #001e4a;
+  --ink-2: #062959;
+  --ink-3: #011435;
+  --ink-text: #edf2f9;
+  --ink-muted: #a3b5cf;
+  --ink-line: #1a3663;
+  --ink-up: #4ad38c;
+  --ink-down: #ff8a91;
+  --ink-gold: #f4c15a;
+  --ink-accent: #43ce85;
+
+  --shadow-xs: 0 1px 2px rgb(0 30 74 / 0.06);
+  --shadow-card: 0 1px 2px rgb(0 30 74 / 0.04), 0 10px 28px -14px rgb(0 30 74 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(0 30 74 / 0.05), 0 18px 40px -16px rgb(0 30 74 / 0.24);
+  --shadow-pop: 0 4px 10px rgb(0 30 74 / 0.08), 0 24px 56px -20px rgb(0 30 74 / 0.32);
+  --glass-edge: rgb(255 255 255 / 0.7);
+
+  /* Charts: one neutral blue for price lines; three slots for the split bar, checked for colour-blind safety */
+  --chart-line: #1d4f9f;
+  --series-1: #1d4f9f;
+  --series-2: #0b9b5c;
+  --series-3: #2e96d0;
+}
+
+/* Dark theme: chosen in the sidebar, or the computer's setting on first visit (data-theme is set before first paint). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #040d1f;
+  --surface: #0a1830;
+  --surface-2: #0f2140;
+  --surface-3: #162b50;
+  --border: #1b3157;
+  --border-strong: #2a4470;
+  --text: #e9eff8;
+  --muted: #9db0cb;
+  --subtle: #6f84a6;
+
+  --brand: #3ccb83;
+  --brand-strong: #6adb9f;
+  --brand-soft: #11313c;
+  --on-brand: #021a10;
+  --navy-fill: #16305c;
+  --ring: #43ce85;
+
+  --gold: #f0bd55;
+  --gold-soft: #282d32;
+  --good: #4fd391;
+  --good-soft: #11313c;
+  --warn: #f4b93c;
+  --warn-soft: #282d32;
+  --bad: #ff8088;
+  --bad-soft: #31293e;
+  --on-bad: #2b0a10;
+  --info: #7fb0f5;
+  --info-soft: #1d3050;
+  --up: #3ecf86;
+  --up-soft: #11323c;
+  --down: #ff7a83;
+  --down-soft: #31293e;
+
+  --ink: #071836;
+  --ink-2: #0c2a5c;
+  --ink-3: #040f24;
+  --ink-line: #1b3157;
+
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 28px -14px rgb(0 0 0 / 0.6);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.4), 0 20px 40px -16px rgb(0 0 0 / 0.75);
+  --shadow-pop: 0 4px 10px rgb(0 0 0 / 0.45), 0 24px 56px -20px rgb(0 0 0 / 0.85);
+  --glass-edge: rgb(255 255 255 / 0.08);
+
+  --chart-line: #5b8fe8;
+  --series-1: #3360cc;
+  --series-2: #1fa968;
+  --series-3: #319dd6;
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--on-brand);
+  --color-navy: var(--navy-fill);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-on-bad: var(--on-bad);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-up: var(--up);
+  --color-up-soft: var(--up-soft);
+  --color-down: var(--down);
+  --color-down-soft: var(--down-soft);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-text: var(--ink-text);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-line: var(--ink-line);
+  --color-ink-up: var(--ink-up);
+  --color-ink-down: var(--ink-down);
+  --color-ink-gold: var(--ink-gold);
+  --color-ink-accent: var(--ink-accent);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-pop: var(--shadow-pop);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "calt"; /* single-storey a, like the wordmark */
+    text-rendering: optimizeLegibility;
+  }
+
+  /* A faint wash of the two brand colours behind every page */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(1100px 520px at 100% -8%, color-mix(in oklab, var(--emerald) 10%, transparent), transparent 68%),
+      radial-gradient(1000px 520px at -8% -14%, color-mix(in oklab, var(--series-1) 11%, transparent), transparent 66%);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 24%, transparent);
+  }
+
+  /* One focus ring everywhere, for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+
+  a,
+  button,
+  summary,
+  input,
+  select,
+  textarea,
+  [role="tab"] {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 160ms;
+    transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  button:not(:disabled),
+  summary,
+  [role="tab"] {
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  input[type="number"] {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Everything from here to the reduced-motion block is a component class. It sits in the "components" layer so that a
+   utility class on the same element (rounded-full, text-right, px-2…) always wins. */
+@layer components {
+/* Numbers line up in tables and stats, whatever font the text around them uses */
+.num {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- surfaces ---------- */
+
+/* Frosted panel for things that float over the page: sticky bars, sign-in card, chart tooltips */
+.glass {
+  background: color-mix(in oklab, var(--surface) 76%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: var(--shadow-card), inset 0 1px 0 var(--glass-edge);
+}
+/* The same on a navy panel */
+.glass-ink {
+  background: rgb(255 255 255 / 0.07);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.11), inset 0 1px 0 rgb(255 255 255 / 0.1);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--surface);
+  }
+}
+
+/* Navy panel with a soft emerald glow: greeting banner, sign-in side panel */
+.ink-panel {
+  color: var(--ink-text);
+  background:
+    radial-gradient(520px 300px at 100% 0%, color-mix(in oklab, var(--emerald) 46%, transparent), transparent 70%),
+    radial-gradient(560px 340px at 0% 120%, color-mix(in oklab, var(--series-3) 26%, transparent), transparent 70%),
+    linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
+}
+
+/* Gentle lift for cards you can click */
+.lift {
+  transition:
+    transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--border-strong);
+  }
+}
+
+/* ---------- dialogs ---------- */
+
+@keyframes nm-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+@keyframes nm-fade {
+  from {
+    opacity: 0;
+  }
+}
+.nm-dialog {
+  margin: auto;
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  padding: 0;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: var(--shadow-pop), inset 0 1px 0 var(--glass-edge);
+}
+.nm-dialog[open] {
+  animation: nm-pop 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.nm-dialog::backdrop {
+  background: rgb(1 10 32 / 0.55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  animation: nm-fade 200ms ease-out;
+}
+
+/* ---------- tables ---------- */
+
+.nm-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+}
+.nm-table th {
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.nm-table th:first-child {
+  border-top-left-radius: 0.75rem;
+}
+.nm-table th:last-child {
+  border-top-right-radius: 0.75rem;
+}
+.nm-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.nm-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.nm-table tbody tr {
+  transition: background-color 160ms ease;
+}
+@media (hover: hover) {
+  .nm-table tbody tr:hover {
+    background: color-mix(in oklab, var(--surface-2) 70%, transparent);
+  }
+}
+
+/* ---------- motion ---------- */
+
+/* Ticker tape: two identical rows slide left forever; hovering pauses it. */
+@keyframes nm-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.nm-marquee {
+  animation: nm-marquee var(--marquee-duration, 90s) linear infinite;
+}
+.nm-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Content eases in when a page opens or is refreshed. "backwards" only: nothing is left transformed afterwards. */
+@keyframes nm-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.nm-enter {
+  animation: nm-enter 360ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+.nm-stagger > * {
+  animation: nm-enter 420ms cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+.nm-stagger > :nth-child(2) {
+  animation-delay: 45ms;
+}
+.nm-stagger > :nth-child(3) {
+  animation-delay: 90ms;
+}
+.nm-stagger > :nth-child(4) {
+  animation-delay: 135ms;
+}
+.nm-stagger > :nth-child(5) {
+  animation-delay: 180ms;
+}
+.nm-stagger > :nth-child(n + 6) {
+  animation-delay: 225ms;
+}
+
+/* Placeholder while something loads: a slow sheen across a quiet block */
+@keyframes nm-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background: var(--surface-3);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--surface) 65%, transparent), transparent);
+  animation: nm-shimmer 1.7s ease-in-out infinite;
+}
+.on-ink .skeleton {
+  background: rgb(255 255 255 / 0.08);
+}
+.on-ink .skeleton::after {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.1), transparent);
+}
+
+/* Thin progress line for "working on it" states */
+@keyframes nm-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+.nm-progress {
+  position: relative;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-3);
+}
+.nm-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--series-1), var(--brand));
+  animation: nm-progress 1.4s ease-in-out infinite;
+}
+
+/* The chart line draws itself once */
+@keyframes nm-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.nm-draw {
+  stroke-dasharray: 1;
+  animation: nm-draw 900ms cubic-bezier(0.3, 0.7, 0.2, 1) backwards;
+}
+
+} /* end of @layer components */
+
+/* People who ask their device for less motion get none of the above: no sliding, no sheen, no lift. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nm-marquee {
+    animation: none !important;
+  }
+  .nm-tape {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nm-tape [aria-hidden="true"] {
+    display: none;
+  }
+  .skeleton::after,
+  .nm-progress::after {
+    display: none;
+  }
+  .nm-draw {
+    stroke-dasharray: none;
+  }
+  .lift:hover {
+    transform: none;
+  }
+}

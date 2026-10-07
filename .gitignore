@@ -1,0 +1,50 @@
+# ---- Personal data and secrets: never commit ----
+data/
+backups/
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite3
+*.npz
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ---- Logs and temporary files ----
+*.log
+logs/
+*.tmp
+*.bak
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Node / Next.js ----
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+web/AGENTS.md
+web/CLAUDE.md
+npm-debug.log*
+
+# ---- Editors, tools and OS ----
+.claude/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

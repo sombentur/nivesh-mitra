@@ -1,0 +1,30 @@
+# Costs of an equity DELIVERY trade on Groww (buy today, sell on a later day). Checked 30-Sep-2026.
+# Every trade idea, backtest and paper trade uses these. Update here when charges change.
+version: 1
+as_of: "2026-09-30"
+sources:
+  brokerage_and_dp: "groww.in/pricing"
+  stt: "Finance Act — 0.1% on buy and sell for delivery"
+  exchange: "NSE circular FA64232 (0.00297% + IPFT 0.0001%)"
+  stamp_duty: "0.015% on the buy side"
+
+brokerage:            # per executed order: 0.1% of value, but at least ₹5 and at most ₹20
+  rate: 0.001
+  min: 5
+  max: 20
+stt_rate: 0.001                 # both buy and sell
+exchange_txn_rate: 0.0000297    # both sides
+ipft_rate: 0.000001             # NSE investor protection fund, both sides
+sebi_fee_rate: 0.000001         # ₹10 per crore, both sides
+stamp_duty_buy_rate: 0.00015    # buy side only
+gst_rate: 0.18                  # on brokerage + exchange + IPFT + SEBI fee + DP charge
+dp_charge_per_sell: 20.0        # ₹3.5 CDSL + ₹16.5 Groww, before GST (≈ ₹23.60 with GST); per stock per sell day
+dp_min_debit_value: 100         # no DP charge if the sell is worth less than this
+slippage_rate: 0.001            # backtests assume you buy 0.1% higher and sell 0.1% lower than the quoted price
+
+# Equity INTRADAY on Groww (buy and sell the same day). Same brokerage; lower STT and stamp duty; no DP charge.
+# Groww squares off open intraday positions itself in the afternoon (with a fee), so practice trades exit by 3:00 PM.
+intraday:
+  stt_sell_rate: 0.00025        # 0.025% on the sell side only
+  stamp_duty_buy_rate: 0.00003  # 0.003% on the buy side
+  slippage_rate: 0.0005         # liquid top-200 stocks: assume 0.05% worse than the quoted price each way

@@ -1,0 +1,95 @@
+# Risk-profile rules (doc 03, Part A). Every number the questionnaire uses lives here.
+# Changing anything below? Bump `version` — each saved profile records which version produced it.
+version: 1
+
+questions:
+  income_ranges:        # monthly take-home pay; `low` is used for EMI and sanity checks (the cautious end)
+    - {value: lt30k,   label: "Under ₹30,000",           low: 15000,  high: 30000}
+    - {value: 30to50k, label: "₹30,000 – ₹50,000",       low: 30000,  high: 50000}
+    - {value: 50kto1l, label: "₹50,000 – ₹1 lakh",       low: 50000,  high: 100000}
+    - {value: 1lto2l,  label: "₹1 lakh – ₹2 lakh",       low: 100000, high: 200000}
+    - {value: 2lto5l,  label: "₹2 lakh – ₹5 lakh",       low: 200000, high: 500000}
+    - {value: gt5l,    label: "Above ₹5 lakh",           low: 500000, high: null}
+  horizons:
+    - {value: lt1,   label: "Less than 1 year"}
+    - {value: 1to3,  label: "1 to 3 years"}
+    - {value: 3to5,  label: "3 to 5 years"}
+    - {value: 5plus, label: "More than 5 years"}
+  fall_reactions:
+    - {value: sell,     label: "Sell, to stop further losses"}
+    - {value: hold,     label: "Hold and wait for it to recover"}
+    - {value: buy_more, label: "Invest more while prices are low"}
+  experience:
+    - {value: none,         label: "I'm new to investing"}
+    - {value: mf_only,      label: "Only mutual funds / SIPs"}
+    - {value: stocks_lt2,   label: "Stocks, for less than 2 years"}
+    - {value: stocks_2plus, label: "Stocks, for 2 years or more"}
+  goal_types:           # default yearly inflation used to grow "today's rupees" to the target year
+    - {value: wealth,          label: "Build wealth",          inflation: 0.06}
+    - {value: retirement,      label: "Retirement",            inflation: 0.06}
+    - {value: child_education, label: "Child's education",     inflation: 0.08}
+    - {value: house,           label: "Buy a house",           inflation: 0.06}
+    - {value: marriage,        label: "Marriage",              inflation: 0.06}
+    - {value: car,             label: "Car",                   inflation: 0.05}
+    - {value: travel,          label: "Travel",                inflation: 0.06}
+    - {value: other,           label: "Something else",        inflation: 0.06}
+
+# --- A2. Risk capacity (max 16 points) ---
+capacity:
+  age_points:            # first band whose `upto` (inclusive) fits
+    - {upto: 29, points: 4}
+    - {upto: 39, points: 3}
+    - {upto: 49, points: 2}
+    - {upto: null, points: 1}
+  horizon_points: {5plus: 4, 3to5: 3, 1to3: 2, lt1: 1}
+  emi_ratio_points:      # EMI ÷ income (cautious end of your range); 0 = no EMIs
+    - {upto: 0.0,  points: 4}
+    - {upto: 0.20, points: 3}
+    - {upto: 0.40, points: 2}
+    - {upto: null, points: 1}
+  emergency_months_points:   # months of expenses already saved
+    - {atleast: 6,    points: 4}
+    - {atleast: 3,    points: 3}
+    - {atleast: 0.01, points: 2}
+    - {atleast: 0,    points: 1}
+  category_min_points: {aggressive: 13, moderate: 9}   # below 9 → conservative
+
+# --- A3. Risk tolerance ---
+tolerance:
+  fall_reaction: {sell: conservative, hold: moderate, buy_more: aggressive}
+  experience_cap: {none: moderate, mf_only: moderate}   # first 12 months
+
+# --- A4. Hard overrides ---
+overrides:
+  horizon_lt1_forces: conservative
+
+# --- A5. Default asset split (%) and safe limits ---
+splits:
+  conservative: {core: 90, satellite: 10, trading: 0}
+  moderate:     {core: 75, satellite: 20, trading: 5}
+  aggressive:   {core: 65, satellite: 25, trading: 10}
+limits:
+  trading_warn_above: 10
+  trading_max: 20            # hard ceiling; values above are refused
+  satellite_warn_above: 35
+  core_warn_below: 50
+  loosen_delay_hours: 24     # raising the trading share waits this long (doc 04 §6)
+
+emergency_fund:
+  target_months: 6
+  trading_unlock_months: 3   # trading bucket stays at 0% below this
+  routing:                   # share of your monthly investable amount sent to a liquid fund while building
+    - {below_months: 3, share: 1.0}
+    - {below_months: 6, share: 0.5}
+
+paper_trading_days: 60
+review_months: 12
+
+# Shown once in onboarding (doc 04 §8). Update when SEBI publishes a newer study.
+sebi_reality_check:
+  - text: "87.7% of individual F&O (futures & options) traders lost money in FY26, and 90.9% in FY25. The average loss was about ₹1.17 lakh per person."
+    source: "SEBI study, press release 50/2026"
+    date: "2026-08-20"
+  - text: "Over 70% of individual intraday traders in the cash segment made losses in FY23 — and 80% of those who traded more than 500 times a year."
+    source: "SEBI study on intraday trading"
+    date: "2024-07-24"
